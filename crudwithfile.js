@@ -21,19 +21,20 @@ const server = http.createServer( async (req, res)=>{
     let url      = req.url;
     let method   = req.method;
 
+    //chunks ia a buffer object
     req.on('data',chunks=>{ body += chunks.toString() })
 
     req.on('end', async ()=> {
 
-         // 1. GET ALL - Use exact match '===' to avoid overlapping with ID routes
+        
         if (url === '/api/users' && method === 'GET') {
             return res.end(JSON.stringify(fileData));
         }
 
-        // 2. GET SINGLE - Use .startsWith()
+        
         if (url.startsWith('/api/users/') && method === 'GET') {
             let id = url.split('/')[3];
-            let user = fileData.find(u => u.id == id); // Use '==' to match String to Number
+            let user = fileData.find(u => u.id == id); 
             res.statusCode = user ? 200 : 404;
             return res.end(JSON.stringify(user || { message: "Not found" }));
         }

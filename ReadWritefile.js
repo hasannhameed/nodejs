@@ -27,7 +27,7 @@ let server = http.createServer((req, res) => {
         req.on('end', () => {
             const parsedBody = Buffer.concat(dataChunks).toString();
             console.log("Full Body Received:", parsedBody);
-            fs.writeFile('bufferValue.txt',parsedBody,(error)=>{
+            fs.appendFile('bufferValue.txt',parsedBody,(error)=>{
 
                 if(error){
                     console.log("Error writing to file:", err);
@@ -49,6 +49,6 @@ let server = http.createServer((req, res) => {
     }
 });
 
-server.listen(3013, () => {
+server.listen(3014, () => {
     console.log('Server is running at http://localhost:3013/home');
 });
