@@ -1,5 +1,5 @@
 const http = require('http');
-const RWfile = require('./ReadWritefile.js');
+const RWfile = require('./routes.js');
 
 const server = http.createServer(RWfile.serverFunction);
 const PORT = 3015;

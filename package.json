@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/hasannhameed/nodejs#readme",
   "dependencies": {
-    "fs": "^0.0.1-security"
+    "express": "^5.2.1",
+    "fs": "^0.0.1-security",
+    "twilio": "^5.12.1"
   }
 }
