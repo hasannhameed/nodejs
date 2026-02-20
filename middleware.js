@@ -9,7 +9,6 @@ app.use('/', (req, res, next)=>{
 })
 
 app.get('/', (req, res)=>{
-  
     res.end(`this is authentication completed you loggedIn as ${req.user}`);
 })
 const server = http.createServer(app);
