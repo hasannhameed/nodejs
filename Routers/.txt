@@ -1,56 +1,207 @@
-Build Your Own Library System with Express.js!
-
-
-
-
-Congratulations! You’re now ready to build your own Express.js application. This task will help you apply what you’ve learned about routes, HTTP methods, and Express Router by creating a simple library management system.
-
-
-
-
-📌 Why is this important?
-
-This project will give you hands-on experience with handling API requests, structuring routes properly, and testing endpoints, all of which are crucial skills for backend development!
+Now it's time to put your skills to the test by creating a Student & Course Portal using Express.js. This project will strengthen your understanding of CRUD operations, routing, and handling dynamic parameters in Express!
 
 
 
 
 Deliverables:
 
-1.Set Up the Server
+Build an Express server with:
 
 
 
 
 
-Use Express.js to create a server.
+Set Up an Express Server that listens on a specified port.
+
+
+
+Use Express Router to modularize your routes.
+
+
+
+Create basic endpoints for students and courses.
+
+
+
+Handle dynamic requests using req.params.id.
+
+
+
+Implement a custom 404 Not Found handler for invalid routes.
 
 
 
 
-2.Create the Routes (API Endpoints) You need to create these routes:(Make sure you are using router for this)
+Features & API Endpoints
 
 
 
 
 
-GET /books: Print a message and send a response like "Here is the list of books!".
+Home Route:
 
 
 
-POST /books: Print the book data sent in the request and send a message like "Book has been added!".
+/ - Welcome message.
+
+
+
+Student Routes:
+
+
+
+/students - List all students.
+
+
+
+/students/:id - Fetch a student by ID.
+
+
+
+Course Routes:
+
+
+
+/courses - List all courses.
+
+
+
+/courses/:id - Fetch a course by ID.
+
+
+
+404 Handling:
+
+
+
+Handle invalid routes with a "Page not found" message.
 
 
 
 
-3.Test Your API
+Note:
+
+Make use of req.params.id for working with /:id
+
+The code has been provided with default values for students and courses which will be used for fetching the values.
+
+
+
+
+Use the following data: (Right now we are using demo data but in real time we'll be using the data that is fetched from the server)
+
+Students Data
+
+const students = [
+
+{ id: 1, name: "Alice" },
+
+{ id: 2, name: "Bob" },
+
+{ id: 3, name: "Charlie" }
+
+];
+
+Courses Data
+
+const courses = [
+
+{ id: 1, name: "Frontend", description: "HTML, CSS, JS, React" },
+
+{ id: 2, name: "Backend", description: "Node.js, Express, MongoDB" }
+
+];
+
+
+
+
+Example :
+
+Endpoints to Test
 
 
 
 
 
-Use Postman or any API testing tool to test your endpoints.
+Home Route:
 
 
 
-Ensure that GET requests return the correct message and POST requests log the received data.
+GET /
+
+
+
+Response: "Welcome to the Student & Course Portal API!"
+
+
+
+Student Routes:
+
+
+
+GET /students
+
+
+
+Response: "Students: Alice, Bob, Charlie"
+
+
+
+GET /students/1
+
+
+
+Response: "Student: Alice"
+
+
+
+GET /students/99
+
+
+
+Response: "Student not found"
+
+
+
+Course Routes:
+
+
+
+GET /courses
+
+
+
+Response: "Courses: Frontend, Backend"
+
+
+
+GET /courses/1
+
+
+
+Response: "Course: Frontend, Description: HTML, CSS, JS, React"
+
+
+
+GET /courses/99
+
+
+
+Response: "Course not found"
+
+
+
+
+
+
+
+
+Invalid Route:
+
+
+
+Example: GET /invalid
+
+
+
+Response: "Page not found"
