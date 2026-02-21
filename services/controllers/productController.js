@@ -3,7 +3,7 @@ const productService = require('../services/productService.js');
 
 exports.getAllProducts = (req, res) => {
     const data = productService.getAllProducts();
-    res.send(data);
+    res.sendFile(data);
 };
 
 exports.getProductById = (req, res) => {
