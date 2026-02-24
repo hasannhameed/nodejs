@@ -4,8 +4,6 @@ const app = express();
 
 app.use(express.json());
 
-
-
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
@@ -15,9 +13,6 @@ const pool = mysql.createPool({
     connectionLimit: 10,
     queueLimit: 0  
 });
-
-
-
 
 app.post('/users', async (req, res) => {
     const { name, email } = req.body;
