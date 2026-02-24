@@ -17,15 +17,12 @@
 
     <script>
         document.getElementById('productForm').addEventListener('submit', async (e) => {
-            e.preventDefault(); // Stop page refresh
+            e.preventDefault();
             
             const productName = document.getElementById('product').value;
 
             try {
-                // Send POST request using Axios
                 const response = await axios.post('/api/products', { productName });
-                
-                // Show the response from server on the page
                 document.getElementById('responseMessage').innerText = 
                     "Server Response: " + JSON.stringify(response.data);
             } catch (error) {

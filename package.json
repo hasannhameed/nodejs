@@ -21,6 +21,7 @@
   "dependencies": {
     "express": "^5.2.1",
     "fs": "^0.0.1-security",
+    "mysql2": "^3.18.0",
     "router": "^2.2.0",
     "twilio": "^5.12.1"
   }

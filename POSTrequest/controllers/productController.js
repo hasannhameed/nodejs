@@ -1,4 +1,4 @@
-const productService = require('../services/productService');
+const productService = require('../services/productService.js');
 exports.serveProductPage = (req, res) => {
     const filePath = productService.getProductFormPath();
     res.sendFile(filePath);
