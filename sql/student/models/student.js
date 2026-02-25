@@ -14,13 +14,17 @@ const Student = sequelize.define('Student',{
     email: {
         type:DataTypes.STRING,
         allowNULL:false
+    },
+    age:{
+        type:DataTypes.STRING,
+        allowNull: false
     }
 });
 
 async function syncfunction(){
     try{
-        await sequelize.sync();
-        console.log('success !');
+        await sequelize.sync({ alter: true });
+        console.log('success from student.js!');
     }catch(error){
         console.log(error);
     }

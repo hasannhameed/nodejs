@@ -8,7 +8,7 @@ const sequelize = new Sequelize('store_db','root','',{
 async function connectDB(){
     try{
         await sequelize.authenticate();
-        console.log('connection success !');
+        console.log('connection success from db !');
     }catch(error){
         console.log('connection error ', error);
     }
