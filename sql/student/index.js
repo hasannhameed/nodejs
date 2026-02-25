@@ -9,6 +9,7 @@ async function runCrud(){
             email: 'hasasn@gmail.com',
             age:16
         })
+
         console.log('data inserted', newStudent.toJSON());
 
         //read
@@ -42,7 +43,16 @@ async function runCrud(){
         console.log('deleted : student with id ',newStudent.id)
 
         //delete
-        const deleteStudent = await Student.destroy()
+        const deleteStudent = await Student.destroy({where:{
+            id:newStudent.id
+        }})
+
+        if(deleteStudent > 0){
+            console.log('this has been deleted successfully');
+        }else{
+            console.log('Something went wrong');
+        }
+        
     }catch(error){
         console.log(error);
     }
