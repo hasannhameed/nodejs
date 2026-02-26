@@ -4,7 +4,7 @@ const { Sequelize, DataTypes, Op } = require('sequelize');
 const app = express();
 app.use(express.json());
 
-const sequelize = new Sequelize('bus_booking_db', 'root', 'password', {
+const sequelize = new Sequelize('bus_booking_db', 'root', '', {
     host: 'localhost',
     dialect: 'mysql',
     logging: false 
@@ -118,7 +118,7 @@ app.post('/payments', async (req, res) => {
             status: req.body.status || 'Pending'
         });
         res.status(201).json({
-            message: '💰 Payment record created',
+            message: ' Payment record created',
             payment
         });
     } catch (err) {

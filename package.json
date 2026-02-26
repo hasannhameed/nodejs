@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "express": "^5.2.1",
     "mysql2": "^3.18.0",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "tailwind": "^4.0.0"
   }
 }
