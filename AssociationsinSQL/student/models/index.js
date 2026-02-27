@@ -1,12 +1,13 @@
 const User = require('./users');
 const IDcards = require('./IDcards');
 
-User.hasMany(IDcards,{
-    onDelete:'CASCADE',
-    foreignKey: 'UserId'
+User.belongsToMany(IDcards,{
+    through: 'UserCourses',
+    foreignKey: 'userId'
 })
-IDcards.belongsTo(User, {
-    foreignKey: 'UserId'
+IDcards.belongsToMany(User, {
+    through: 'UserCourses',
+    foreignKey: 'userId'
 });
 
 module.exports = { User, IDcards };
