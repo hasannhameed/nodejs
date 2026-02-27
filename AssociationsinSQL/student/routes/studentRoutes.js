@@ -1,33 +1,46 @@
 const express = require('express');
 const router = express.Router();
-const users = require('../models/users');
-const Post = require('../models/Post');
+const { user, IDcards } = require('../models/index');
 
 
-router.post('/add-post', async (req, res) => {
+router.post('/user', async (req, res) => {
     try {
-        const { title, content, userId } = req.body;
+        const { user:userData, card:cardData } = req.body;
         
+        const newUser = await user.create({ 
+            ...userData,
+            IDcard: cardData
+         },{
+            include: [IDcards]
+         });
         
-        const newPost = await Post.create({ title, content, userId });
-        
-        res.status(201).json({ 
-            message: 'Post created and associated successfully', 
-            newPost 
-        });
+        res.status(201).json(newUser);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
+router.get('/user/', async (req, res) => {
+    try {
+        
+        const userData = await user.findAll({
+            include: IDcards 
+        });
 
-router.get('/user-posts/:id', async (req, res) => {
+        if (userData.length === 0) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json(userData);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.get('/user/:id', async (req, res) => {
     try {
         const userId = req.params.id;
-        
-        
-        const userData = await users.findByPk(userId, {
-            include: Post 
+        const userData = await user.findByPk(userId, {
+            include: IDcards 
         });
 
         if (!userData) {
@@ -35,6 +48,23 @@ router.get('/user-posts/:id', async (req, res) => {
         }
 
         res.status(200).json(userData);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.delete('/user/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const deletedRows = await user.destroy({
+            where: { id: userId }
+        });
+
+        if (deletedRows==0) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ message: "User and their ID card deleted successfully" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

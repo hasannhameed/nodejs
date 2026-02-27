@@ -3,10 +3,13 @@ const {DataTypes} = require('sequelize');
 
 const IDcards = sequelize.define('IDcards',{
     id:{
-        type:DataTypes.INTEGER,autoIncrement: true,primaryKey:true
+        type:DataTypes.INTEGER,
+         primaryKey: true,
+        allowNull: false,
+        autoIncrement: true 
     },
-    cours:{
-        type:DataTypes.STRING
+    cardNumber:{
+        type:DataTypes.INTEGER
     },
 })
 

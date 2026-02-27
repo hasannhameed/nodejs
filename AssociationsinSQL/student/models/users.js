@@ -4,8 +4,9 @@ const {DataTypes} = require('sequelize');
 const Users = sequelize.define('Users',{
     id:{
         type:DataTypes.INTEGER,
-        primaryKey:true,
-        allowNull:false
+         primaryKey: true,
+         allowNull: false,
+         autoIncrement: true 
     },
     name:{
         type:DataTypes.STRING,
