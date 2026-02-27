@@ -1,9 +1,8 @@
 const User = require('./users');
 const IDcards = require('./IDcards');
 
-User.hasOne(IDcards,{
+User.hasMany(IDcards,{
     onDelete:'CASCADE',
-    onUpdate:'CASCADE',
     foreignKey: 'UserId'
 })
 IDcards.belongsTo(User, {
