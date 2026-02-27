@@ -52,7 +52,7 @@
             };
 
             const displayData = (data) => {
-                // If data is just one object (from POST), wrap it in an array so forEach works
+                
                 const items = Array.isArray(data) ? data : [data];
                 
                 items.forEach((item) => {
@@ -78,7 +78,7 @@
                         headers: { 'Content-Type': 'application/json' }
                     };
 
-                    // CRITICAL: body is NOT allowed for GET requests
+                    
                     if (!isGet) {
                         options.body = JSON.stringify({ name, email });
                     }
@@ -108,7 +108,7 @@
                 }
             });
 
-            // Run on page load to show existing data
+            
             const init = async () => {
                 const initialData = await saveBooking();
                 if (initialData) displayData(initialData);
