@@ -160,7 +160,7 @@ const deleteCourse = async (req, res) => {
 
 const deleteAllCourse = async (req, res) => {
     try{
-        const affectedRows = await  Course.destroy(
+        const affectedRows = await Course.destroy(
         {
             where: {}, 
             truncate: false
@@ -179,7 +179,7 @@ const putCourse = async (req, res) => {
         const courseId = req.params.id;
         const data = req.body;
         const affectedrows = await Course.update(data,{where:{id:courseId}},{include:Course});
-        if(affectedRows==0){
+        if( affectedRows == 0 ){
             return res.status(500).json({"Error":"Course Details Not Updated"});
         }
         res.status(200).json(affectedRows);

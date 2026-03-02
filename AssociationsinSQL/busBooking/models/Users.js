@@ -1,0 +1,20 @@
+const sequelize = require('../config/database');
+const {DataTypes} = require('sequelize');
+
+const Users = sequelize.define("Users",{
+    id:{
+        type:DataTypes.INTEGER,
+        autoIncrement:true,
+        primaryKey:true,
+    },
+    name:{
+        type:DataTypes.STRING,
+        allowNull:false
+    },
+    email:{
+        type:DataTypes.STRING,
+        aloowNull:false
+    }
+});
+
+module.exports = Users;
