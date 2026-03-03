@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Booking Admin | Enterprise Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root { --bs-primary: #4361ee; --bs-success: #2ec4b6; }
+        body { background-color: #f1f5f9; font-family: 'Inter', sans-serif; }
+        .main-card { background: white; border: none; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); transition: 0.3s; }
+        .nav-pills .nav-link { color: #64748b; font-weight: 500; border-radius: 8px; }
+        .nav-pills .nav-link.active { background-color: var(--bs-primary); color: white; }
+        .table thead th { background-color: #f8fafc; text-transform: uppercase; font-size: 0.7rem; color: #64748b; }
+        .status-confirmed { color: #065f46; background-color: #d1fae5; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
+        .status-pending { color: #92400e; background-color: #fef3c7; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
+        .status-cancelled { color: #991b1b; background-color: #fee2e2; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark m-0">Admin Control Panel</h2>
+            <p class="text-muted small">Manage Users, Buses, and Reservations in one place</p>
+        </div>
+    </div>
+
+    <ul class="nav nav-pills mb-4 bg-white p-2 rounded-3 shadow-sm" id="pills-tab" role="tablist">
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab-bookings">Bookings</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-users" onclick="fetchUsers()">Users</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab-buses" onclick="fetchBuses()">Buses</button></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="tab-bookings">
+            <div class="main-card p-4">
+                <div class="d-flex justify-content-between mb-3">
+                    <h5 class="fw-bold">Reservations</h5>
+                    <button class="btn btn-primary btn-sm px-3" onclick="openCreateModal()">+ New Booking</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead><tr><th>ID</th><th>Passenger</th><th>Bus</th><th>Seat</th><th>Status</th><th class="text-center">Action</th></tr></thead>
+                        <tbody id="bookings-table"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-users">
+            <div class="main-card p-4">
+                <div class="d-flex justify-content-between mb-3">
+                    <h5 class="fw-bold">System Users</h5>
+                    <button class="btn btn-success btn-sm px-3" data-bs-toggle="modal" data-bs-target="#addUserModal">+ Add User</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Action</th></tr></thead>
+                        <tbody id="users-table"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-buses">
+            <div class="main-card p-4">
+                <div class="d-flex justify-content-between mb-3">
+                    <h5 class="fw-bold">Fleet Management</h5>
+                    <button class="btn btn-info text-white btn-sm px-3" data-bs-toggle="modal" data-bs-target="#addBusModal">+ Add Bus</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead><tr><th>ID</th><th>Bus Number</th><th>Total Seats</th><th>Action</th></tr></thead>
+                        <tbody id="buses-table"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addUserModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content"><form id="userForm">
+        <div class="modal-header"><h5>Register New User</h5></div>
+        <div class="modal-body">
+            <div class="mb-3"><label class="form-label">Full Name</label><input type="text" id="uName" class="form-control" required></div>
+            <div class="mb-3"><label class="form-label">Email Address</label><input type="email" id="uEmail" class="form-control" required></div>
+        </div>
+        <div class="modal-footer"><button type="submit" class="btn btn-success w-100">Save User</button></div>
+    </form></div></div>
+</div>
+
+<div class="modal fade" id="addBusModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content"><form id="busForm">
+        <div class="modal-header"><h5>Add New Bus</h5></div>
+        <div class="modal-body">
+            <div class="mb-3"><label class="form-label">Bus Number</label><input type="text" id="bNum" class="form-control" required placeholder="e.g. MH-12-AX-1234"></div>
+            <div class="mb-3"><label class="form-label">Total Seats</label><input type="number" id="bSeats" class="form-control" required min="10" max="60"></div>
+        </div>
+        <div class="modal-footer"><button type="submit" class="btn btn-info text-white w-100">Register Bus</button></div>
+    </form></div></div>
+</div>
+
+<div class="modal fade" id="createModal" tabindex="-1">
+    <div class="modal-dialog"><div class="modal-content"><form id="createForm">
+        <div class="modal-header bg-primary text-white"><h5>New Reservation</h5></div>
+        <div class="modal-body p-4">
+            <div class="mb-3"><label class="form-label fw-bold">Select Passenger</label><select id="createUserId" class="form-select" required></select></div>
+            <div class="mb-3"><label class="form-label fw-bold">Select Bus</label><select id="createBusId" class="form-select" required></select></div>
+            <div class="row">
+                <div class="col-6 mb-3"><label class="form-label">Seat #</label><input type="number" id="createSeat" class="form-control" required></div>
+                <div class="col-6 mb-3"><label class="form-label">Status</label><select id="createStatus" class="form-select"><option value="confirmed">Confirmed</option><option value="pending">Pending</option></select></div>
+            </div>
+        </div>
+        <div class="modal-footer"><button type="submit" class="btn btn-primary w-100">Create Booking</button></div>
+    </form></div></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const BASE_URL = 'http://localhost:3000';
+
+    // --- USERS LOGIC ---
+    async function fetchUsers() {
+        const res = await fetch(`${BASE_URL}/user`);
+        const data = await res.json();
+        document.getElementById('users-table').innerHTML = data.map(u => `<tr><td>${u.id}</td><td>${u.name}</td><td>${u.email}</td><td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem('user', ${u.id})">Delete</button></td></tr>`).join('');
+    }
+
+    document.getElementById('userForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await fetch(`${BASE_URL}/user`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name: document.getElementById('uName').value, email: document.getElementById('uEmail').value})
+        });
+        bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
+        fetchUsers();
+    });
+
+    // --- BUSES LOGIC ---
+    async function fetchBuses() {
+        const res = await fetch(`${BASE_URL}/bus`);
+        const data = await res.json();
+        document.getElementById('buses-table').innerHTML = data.map(b => `<tr><td>${b.id}</td><td><b>${b.busNumber}</b></td><td>${b.totalSeats}</td><td><button class="btn btn-sm btn-outline-danger" onclick="deleteItem('bus', ${b.id})">Delete</button></td></tr>`).join('');
+    }
+
+    document.getElementById('busForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await fetch(`${BASE_URL}/bus`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({busNumber: document.getElementById('bNum').value, totalSeats: document.getElementById('bSeats').value})
+        });
+        bootstrap.Modal.getInstance(document.getElementById('addBusModal')).hide();
+        fetchBuses();
+    });
+
+    // --- BOOKING LOGIC ---
+    async function fetchBookings() {
+        const res = await fetch(`${BASE_URL}/booking`);
+        const data = await res.json();
+        document.getElementById('bookings-table').innerHTML = data.map(b => `
+            <tr>
+                <td>#${b.id}</td>
+                <td><b>${b.User?.name || 'N/A'}</b><br><small>${b.User?.email || ''}</small></td>
+                <td><span class="badge bg-light text-dark border">${b.Bus?.busNumber || 'N/A'}</span></td>
+                <td>${b.seatNumber}</td>
+                <td><span class="status-${b.status}">${b.status}</span></td>
+                <td class="text-center"><button class="btn btn-sm text-danger" onclick="deleteItem('booking', ${b.id})"><i class="bi bi-trash"></i></button></td>
+            </tr>`).join('');
+    }
+
+    async function openCreateModal() {
+        const [uRes, bRes] = await Promise.all([fetch(`${BASE_URL}/user`), fetch(`${BASE_URL}/bus`)]);
+        const users = await uRes.json();
+        const buses = await bRes.json();
+        document.getElementById('createUserId').innerHTML = users.map(u => `<option value="${u.id}">${u.name} (ID: ${u.id})</option>`).join('');
+        document.getElementById('createBusId').innerHTML = buses.map(b => `<option value="${b.id}">${b.busNumber}</option>`).join('');
+        new bootstrap.Modal(document.getElementById('createModal')).show();
+    }
+
+    document.getElementById('createForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const res = await fetch(`${BASE_URL}/booking`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                userId: document.getElementById('createUserId').value,
+                busId: document.getElementById('createBusId').value,
+                seatNumber: document.getElementById('createSeat').value,
+                status: document.getElementById('createStatus').value
+            })
+        });
+        if(res.ok) { bootstrap.Modal.getInstance(document.getElementById('createModal')).hide(); fetchBookings(); }
+    });
+
+    async function deleteItem(type, id) {
+        if(confirm(`Delete this ${type}?`)) {
+            await fetch(`${BASE_URL}/${type}/${id}`, { method: 'DELETE' });
+            if(type === 'user') fetchUsers(); else if(type === 'bus') fetchBuses(); else fetchBookings();
+        }
+    }
+
+    window.onload = fetchBookings;
+</script>
+</body>
+</html>

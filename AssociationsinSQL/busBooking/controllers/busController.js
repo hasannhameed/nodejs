@@ -15,7 +15,7 @@ const getBus = async(req, res) => {
 }
 const getBuses = async(req, res) => {
     try{
-        const buses = await Buses.findAll();
+        const buses = await Buses.findAll({include:[{model:Bookings,include:[{model:Users,attributes:['name','email']}]}]});
         if(buses.length ==0 ){
             return res.status(500).json({"message":"buses not fount"});
         }

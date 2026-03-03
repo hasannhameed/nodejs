@@ -1,23 +1,42 @@
 const {Users,Bookings,Buses} = require('../models/associations');
 
 
-const getUser = async(req, res) => {
-    try{
+const getUser = async (req, res) => {
+    try {
         const userId = req.params.id;
-        const user = await Users.findByPk(userId);
-        if(!user){
-            return res.status(500).json({"message":"user not fount"});
+
+        const user = await Users.findByPk(userId, {
+            include: [{
+                model: Bookings, 
+                include: [{
+                    model: Buses, 
+                    attributes: ['busNumber', 'totalSeats']
+                }]
+            }]
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
         }
+
         res.status(200).json(user);
-    }catch(error){
-        res.status(500).json({"Error":error.message})
+    } catch (error) {
+        res.status(500).json({ "Error": error.message });
     }
-}
+};
 const getUsers = async(req, res) => {
      try{
-        const users = await Users.findAll();
-        if(users.length==0){
-            return res.status(500).json({"message":"users not fount"});
+        const users = await Users.findAll({
+            include: [{
+                model: Bookings, 
+                include: [{
+                    model: Buses,
+                    attributes: ['busNumber', 'totalSeats']
+                }]
+            }]
+        });
+        if( users.length == 0 ){
+            return res.status(404).json({"message":"users not found"});
         }
         res.status(200).json(users);
     }catch(error){
