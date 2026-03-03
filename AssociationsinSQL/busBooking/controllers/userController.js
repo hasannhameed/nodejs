@@ -23,7 +23,6 @@ const getUsers = async(req, res) => {
     }catch(error){
         res.status(500).json({"Error":error.message})
     }
-    
 }
 const postUser = async(req, res) => {
      try{
